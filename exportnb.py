@@ -44,8 +44,8 @@ def register_cell(dictionary, cell_lines, add_newline=True):
         dictionary[file] = lines
     return dictionary
 
-def read_notebook(dictionary, notebook, add_newline = True):    
-    with open(notebook, 'r') as f:
+def read_notebook(dictionary, notebook, add_newline = True):
+    with open(notebook, 'r', encoding='utf-8') as f:
         j = json.load(f)
         if j["nbformat"] >=4:
             for i,cell in enumerate(j["cells"]):
@@ -66,7 +66,7 @@ def write_notebooks(dictionary, root='', mkdirs=True):
         path = pathlib.Path(file)
         if mkdirs:
             path.parent.mkdir(parents=True, exist_ok=True)
-        with path.open('w') as f:
+        with path.open('w', encoding='utf-8') as f:
             for line in dictionary[file]:
                 f.write(line)
 
