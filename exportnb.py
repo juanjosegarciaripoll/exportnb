@@ -44,7 +44,9 @@ def register_cell(dictionary, cell_lines, add_newline=True):
         dictionary[file] = lines
     return dictionary
 
-def read_notebook(dictionary, notebook, add_newline = True):
+def read_notebook(dictionary, notebook, add_newline=True, verbose=False):
+    if verbose:
+        print(f'Reading notebook {verbose}')
     with open(notebook, 'r', encoding='utf-8') as f:
         j = json.load(f)
         if j["nbformat"] >=4:
@@ -54,7 +56,7 @@ def read_notebook(dictionary, notebook, add_newline = True):
             for i,cell in enumerate(j["worksheets"][0]["cells"]):
                 dictionary = register_cell(dictionary, cell["input"], add_newline)
 
-def write_notebooks(dictionary, root='', mkdirs=True):
+def write_notebooks(dictionary, root='', mkdirs=True, verbose=False):
     #
     # Input:
     #  - dictionary: a map from file names to list of lines of codes
@@ -66,11 +68,13 @@ def write_notebooks(dictionary, root='', mkdirs=True):
         path = pathlib.Path(file)
         if mkdirs:
             path.parent.mkdir(parents=True, exist_ok=True)
+        if verbose:
+            print(f'Exporting file {f}')
         with path.open('w', encoding='utf-8') as f:
             for line in dictionary[file]:
                 f.write(line)
 
-def export_notebooks(notebooks, root='', add_newline=True, mkdirs=True):
+def export_notebooks(notebooks, root='', add_newline=True, mkdirs=True, verbose=False):
     #
     # Input:
     #  - notebooks: list of notebooks as file names
@@ -79,5 +83,5 @@ def export_notebooks(notebooks, root='', add_newline=True, mkdirs=True):
     #
     dictionary = {}
     for nb in notebooks:
-        read_notebook(dictionary, nb, add_newline=add_newline)
-    write_notebooks(dictionary, root=root, mkdirs=mkdirs)
+        read_notebook(dictionary, nb, add_newline=add_newline, verbose=verbose)
+    write_notebooks(dictionary, root=root, mkdirs=mkdirs, verbose=verbose)
