@@ -46,7 +46,7 @@ def register_cell(dictionary, cell_lines, add_newline=True):
 
 def read_notebook(dictionary, notebook, add_newline=True, verbose=False):
     if verbose:
-        print(f'Reading notebook {verbose}')
+        print(f'Reading notebook {notebook}')
     with open(notebook, 'r', encoding='utf-8') as f:
         j = json.load(f)
         if j["nbformat"] >=4:
@@ -69,7 +69,7 @@ def write_notebooks(dictionary, root='', mkdirs=True, verbose=False):
         if mkdirs:
             path.parent.mkdir(parents=True, exist_ok=True)
         if verbose:
-            print(f'Exporting file {f}')
+            print(f'Exporting file {file}')
         with path.open('w', encoding='utf-8') as f:
             for line in dictionary[file]:
                 f.write(line)
